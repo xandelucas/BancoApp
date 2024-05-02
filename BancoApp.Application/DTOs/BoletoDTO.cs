@@ -8,7 +8,7 @@ namespace BancoApp.Application.DTOs
 {
     public class BoletoDTO
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string NomeDoPagador { get; set; }
         public string CPF_CNPJDoPagador { get; set; }
         public string NomeDoBeneficiario { get; set; }

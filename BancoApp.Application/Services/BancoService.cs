@@ -13,30 +13,38 @@ namespace BancoApp.Application.Services
     public class BancoService : IBancoService
     {
         private readonly IMapper _mapper;
-        private readonly IBancoRepository _BancoRepository;
-        public BancoService(IBancoRepository BancoRepository, IMapper mapper)
+        private readonly IBancoRepository _bancoRepository;
+
+        public BancoService(IBancoRepository bancoRepository, IMapper mapper)
         {
-            _BancoRepository = BancoRepository;
+            _bancoRepository = bancoRepository;
             _mapper = mapper;
         }
-        public Task<Banco> AtualizaBancoAsync(BancoDTO banco)
+
+        // Função para criar um novo banco
+        public async Task<Banco> CriaBancoAsync(BancoDTO bancoDTO)
         {
-            throw new NotImplementedException();
+            var banco = _mapper.Map<Banco>(bancoDTO);
+            return await _bancoRepository.CriaBancoAsync(banco);
         }
 
-        public Task<Banco> CriaBancoAsync(BancoDTO banco)
+        // Função para atualizar um banco
+        public async Task<Banco> AtualizaBancoAsync(BancoDTO bancoDTO)
         {
-            throw new NotImplementedException();
+            var banco = _mapper.Map<Banco>(bancoDTO);
+            return await _bancoRepository.AtualizaBancoAsync(banco);
         }
 
-        public Task<List<Banco>> GetAllBancosAsync(string nomeCampo, bool isAcendente = true, int pageNumber = 1, int pageSize = 10)
+        // Função para obter todos os bancos
+        public async Task<List<Banco>> GetAllBancosAsync(string nomeCampo, bool isAcendente = true, int pageNumber = 1, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            return await _bancoRepository.GetAllBancosAsync(nomeCampo, isAcendente, pageNumber, pageSize);
         }
 
-        public Task<Banco?> GetBancoByIdAsync(long id)
+        // Função para obter um banco pelo ID
+        public async Task<Banco?> GetBancoByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _bancoRepository.GetBancoByIdAsync(id);
         }
     }
 }

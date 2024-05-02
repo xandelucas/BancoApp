@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BancoApp.Application.Interface;
 using BancoApp.Application.DTOs;
+using System.Drawing;
 
 namespace BancoApp.Application.Services
 {
@@ -14,11 +15,13 @@ namespace BancoApp.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IBoletoRepository _boletoRepository;
+        private readonly IBancoService _bancoService;
 
-        public BoletoService(IBoletoRepository boletoRepository, IMapper mapper)
+        public BoletoService(IBoletoRepository boletoRepository, IMapper mapper, IBancoService bancoService)
         {
             _boletoRepository = boletoRepository;
             _mapper = mapper;
+            _bancoService = bancoService;
         }
 
         // Função para criar um novo boleto
@@ -29,13 +32,20 @@ namespace BancoApp.Application.Services
         }
 
         // Função para ler um boleto pelo ID
-        public async Task<Boleto> GetBoletoByIdAsync(long id)
+        public async Task<Boleto?> GetBoletoByIdAsync(long id)
         {
-            return await _boletoRepository.GetBoletoByIdAsync(id);
+            Boleto boleto = await _boletoRepository.GetBoletoByIdAsync(id);
+            if (boleto != null && boleto.DataDeVencimento > DateTime.Now)
+            {
+                var banco = await _bancoService.GetBancoByIdAsync(boleto.BancoId);
+                boleto.Valor = CalcularJuros(boleto.Valor, banco.PercentualDeJuros);
+            }
+
+            return boleto;
         }
 
         // Função para calcular juros
-        public decimal CalcularJuros(decimal valor, decimal percentualDeJuros)
+        private decimal CalcularJuros(decimal valor, decimal percentualDeJuros)
         {
             return valor * (percentualDeJuros / 100);
         }

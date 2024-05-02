@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>bca876b8-c57b-4073-95d9-91d912b49c83</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,10 +26,6 @@
     <ProjectReference Include="..\BancoApp.Domain\BancoApp.Domain.csproj" />
     <ProjectReference Include="..\BancoApp.Application\BancoApp.Application.csproj" />
     <ProjectReference Include="..\BancoApp.Infrastructure\BancoApp.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
